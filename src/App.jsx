@@ -3,6 +3,8 @@ import Header from "./components/Header/Header";
 import "./index.css";
 import CarouselEffect from "./components/Carousel/Carousel";
 import Category from "./components/Category/Category";
+import Product from "./components/Product/Product";
+
 
 const App = () => {
   return (
@@ -10,6 +12,7 @@ const App = () => {
       <Header />
       <CarouselEffect />
       <Category />
+      <Product />
     </>
   );
 };
