@@ -58,12 +58,12 @@ const Header = () => {
             </div>
           </a>
           {/* Orders */}
-          <a href="">
+          <a href="/orders">
             <p>returns</p>
             <span>& Orders</span>
           </a>
           {/* Cart */}
-          <a href="" className={classes.cart}>
+          <a href="/cart" className={classes.cart}>
             <BiCart size={35} />
             {/* icon */}
             <span>0</span>
