@@ -10,7 +10,6 @@ function ProductCard({ product }) {
     <div className={classes.card_container}>
       <a href="">
         <img src={image} alt={product.title} />
-        
       </a>
       <div>
         <h3>{title}</h3>
