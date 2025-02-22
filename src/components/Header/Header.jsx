@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import classes from "./Header.module.css";
 import { SlLocationPin } from "react-icons/sl";
 import { BsSearch } from "react-icons/bs";
 import { BiCart } from "react-icons/bi";
 import LowerHeader from "./LowerHeader";
+import { DataContext } from "../DataProvider/DataProvider";
 
 const Header = () => {
+  const [{ basket }, dispatch] = useContext(DataContext);
   return (
     <>
       <div className={classes.header_container}>
@@ -44,7 +46,7 @@ const Header = () => {
           <a className={classes.language}>
             <img
               src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/1024px-Flag_of_the_United_States.svg.png"
-              alt=""
+              alt="USA flag"
             />
             <section>
               <option value="">EN</option>
@@ -66,7 +68,7 @@ const Header = () => {
           <a href="/cart" className={classes.cart}>
             <BiCart size={35} />
             {/* icon */}
-            <span>0</span>
+            <span>{basket.length}</span>
           </a>
         </div>
       </div>
