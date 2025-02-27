@@ -5,11 +5,17 @@ import { BsSearch } from "react-icons/bs";
 import { BiCart } from "react-icons/bi";
 import LowerHeader from "./LowerHeader";
 import { DataContext } from "../DataProvider/DataProvider";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [{ basket }, dispatch] = useContext(DataContext);
+  // console.log(basket.length);
+  const totalItem = basket?.reduce((amount, item) => {
+    return item.amount + amount;
+  }, 0);
+
   return (
-    <>
+    <section className={classes.fixed}>
       <div className={classes.header_container}>
         {/* logo section */}
         <div className={classes.logo_container}>
@@ -52,28 +58,27 @@ const Header = () => {
               <option value="">EN</option>
             </section>
           </a>
-          {/* three comp;onents */}
-          <a href="">
+          {/* three components */}
+          <Link to="/auth">
             <div>
               <p>Sign In</p>
               <span>Account &Lists</span>
             </div>
-          </a>
+          </Link>
           {/* Orders */}
-          <a href="/orders">
+          <Link to="/orders">
             <p>returns</p>
             <span>& Orders</span>
-          </a>
+          </Link>
           {/* Cart */}
-          <a href="/cart" className={classes.cart}>
+          <Link to="/cart" className={classes.cart}>
             <BiCart size={35} />
-            {/* icon */}
-            <span>{basket.length}</span>
-          </a>
+            <span>{totalItem}</span>
+          </Link>
         </div>
       </div>
       <LowerHeader />
-    </>
+    </section>
   );
 };
 

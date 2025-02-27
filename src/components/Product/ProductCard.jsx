@@ -6,17 +6,24 @@ import { Link } from "react-router-dom";
 import { DataContext } from "../DataProvider/DataProvider";
 import { Type } from "../../Utility/action.type";
 
-function ProductCard({ product, flex, renderDesc }) {
+function ProductCard({ product, flex, renderDesc, renderAdd }) {
   const { image, title, id, rating, price, description } = product;
 
   // const [state, dispatch] = useContext(DataContext);
-const [state, dispatch] = useContext(DataContext);
-const { basket } = state;
+  const [state, dispatch] = useContext(DataContext);
+  const { basket } = state;
 
   const addToCart = () => {
     dispatch({
       type: Type.ADD_TO_BASKET,
-      item: product,
+      item: {
+        id,
+        title,
+        image,
+        price,
+        rating,
+        description,
+      },
     });
   };
 
@@ -47,9 +54,12 @@ const { basket } = state;
         <div>
           <CurrencyFormat amount={price} />
         </div>
-        <button className={classes.button} onClick={addToCart}>
-          Add to cart
-        </button>
+
+        {renderAdd && (
+          <button className={classes.button} onClick={addToCart}>
+            Add to cart
+          </button>
+        )}
       </div>
     </div>
   );
