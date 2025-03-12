@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import classes from "./SignUp.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../Utility/firebase";
 import ClipLoader from "react-spinners/ClipLoader";
 import {
@@ -8,12 +8,12 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { DataContext } from "../../components/DataProvider/DataProvider";
-import { useNavigate } from "react-router-dom";
+import { Type } from "../../Utility/action.type";
 
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, seterror] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState({
     signIn: false,
     signUp: false,
@@ -21,23 +21,30 @@ function Auth() {
 
   const [{ user }, dispatch] = useContext(DataContext);
   const navigate = useNavigate();
+  const navStateData = useLocation();
+  console.log(navStateData);
+
+  // console.log(user);
 
   const authHandler = async (e) => {
     e.preventDefault();
+    console.log(e.target.name);
     if (e.target.name === "signin") {
+      // firebase auth
+
       setLoading({ ...loading, signIn: true });
 
       signInWithEmailAndPassword(auth, email, password)
         .then((userInfo) => {
           dispatch({
-            type: "SET_USER",
+            type: Type.SET_USER,
             user: userInfo.user,
           });
           setLoading({ ...loading, signIn: false });
-          navigate("/");
+          navigate(navStateData?.state?.redirect || "/");
         })
         .catch((err) => {
-          seterror(err.message);
+          setError(err.message);
           setLoading({ ...loading, signIn: false });
         });
     } else {
@@ -45,14 +52,14 @@ function Auth() {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userInfo) => {
           dispatch({
-            type: "SET_USER",
+            type: Type.SET_USER,
             user: userInfo.user,
           });
           setLoading({ ...loading, signUp: false });
-          navigate("/");
+          navigate(navStateData?.state?.redirect || "/");
         })
         .catch((err) => {
-          seterror(err.message);
+          setError(err.message);
           setLoading({ ...loading, signUp: false });
         });
     }
@@ -68,7 +75,19 @@ function Auth() {
       </Link>
 
       <div className={classes.login__container}>
-        <h1>Sign-In</h1>
+        <h1>Sign In</h1>
+        {navStateData?.state?.msg && (
+          <small
+            style={{
+              padding: "5px",
+              textAlign: "center",
+              color: "red",
+              fontWeight: "bold",
+            }}
+          >
+            {navStateData?.state?.msg}
+          </small>
+        )}
         <form action="">
           <div>
             <label htmlFor="email">Email:</label>
@@ -90,7 +109,12 @@ function Auth() {
             />
           </div>
 
-          <button type="submit" onClick={authHandler} name="signin">
+          <button
+            type="submit"
+            onClick={authHandler}
+            name="signin"
+            className={classes.login_signInButton}
+          >
             {loading.signIn ? (
               <ClipLoader color="white" size={15} margin={2} />
             ) : (
@@ -99,11 +123,14 @@ function Auth() {
           </button>
         </form>
 
+        {/* agreement */}
         <p>
           By signing-in you agree to the AMAZON FAKE CLONE Conditions of Use &
           Sale. Please see our Privacy Notice, our Cookies Notice and our
           Interest-Based Ads Notice.
         </p>
+
+        {/* create account btn */}
 
         <button
           type="submit"

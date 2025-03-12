@@ -83,7 +83,7 @@ function Cart() {
               <small>This order contains a gift </small>
             </span>
 
-            <Link to="/payment">Continue to checkout</Link>
+            <Link to="/payments">Continue to checkout</Link>
           </div>
         )}
       </section>

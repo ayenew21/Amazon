@@ -8,8 +8,10 @@ export const initialState = {
 export const reducer = (state, action) => {
   switch (action.type) {
     case Type.ADD_TO_BASKET:
-      const existItem = state.basket.find((item) => item.id === action.item.id);
-      if (!existItem) {
+      const existingItem = state.basket.find(
+        (item) => item.id === action.item.id
+      );
+      if (!existingItem) {
         return {
           ...state,
           basket: [...state.basket, { ...action.item, amount: 1 }],
@@ -41,6 +43,12 @@ export const reducer = (state, action) => {
       return {
         ...state,
         basket: newBasket,
+      };
+
+    case Type.EMPTY_BASKET:
+      return {
+        ...state,
+        basket: [],
       };
     case Type.SET_USER:
       return {
